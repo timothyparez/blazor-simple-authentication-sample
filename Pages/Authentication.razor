@@ -1,8 +1,15 @@
 ﻿@page "/authentication/{action}"
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject AuthenticationStateProvider AuthenticationService
+@inject NavigationManager Navigation
 
 @* <RemoteAuthenticatorView Action="@Action" /> *@
+
+
+@if (Action == "login")
+{
+    <Login/>
+}
+
 
 @code{
     [Parameter] public string? Action { get; set; }
@@ -25,10 +32,8 @@
             {
                 case "logout":
                     await ((CustomAuthenticationService)AuthenticationService).SignOutAsync();
-                    break;
-                case "login":
-                    await ((CustomAuthenticationService)AuthenticationService).SignInAsync("Batman", "sponge");
-                    break;
+                    Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");                                        
+                    break;                
                 default:
                     break;
             }            

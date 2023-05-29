@@ -1,0 +1,56 @@
+
+@inject AuthenticationStateProvider AuthenticationService
+@inject NavigationManager Navigation
+
+<MudCard Class="login-card">
+    <MudCardContent>
+        <MudForm>
+            <MudTextField Label="Username" @bind-Value="@username" Required="true" Class="ma-2" />
+            <MudTextField Label="Password" @bind-Value="@password" Required="true" Type="InputType.Password" Class="ma-2"/>
+            <MudTextField Label="Server Address" @bind-Value="@serverAddress" Required="true" Class="ma-2"/>
+            <MudSelect Label="Server Port" @bind-Value="@serverPort" Required="true" Class="ma-2">
+                @foreach (var port in availablePorts)
+                {
+                    <MudSelectItem Value="port" Label="@(port == customPort ? "Custom" : port.ToString())" />
+                }
+            </MudSelect>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PerformLogin" Class="ma-2">Login</MudButton>
+        </MudForm>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private string username;
+    private string password;
+    private string serverAddress;
+    private int serverPort;
+    private int customPort;
+    
+    private readonly int[] availablePorts = new int[] { 1883, 8883, 8884, 9001, 9002 };
+
+    private async Task PerformLogin()
+    {
+        await ((CustomAuthenticationService)AuthenticationService).SignInAsync(username, password);
+        Navigation.NavigateTo($"/");
+    }
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        customPort = availablePorts.Max() + 1;
+    }
+    
+    private bool IsCustomPortSelected() => serverPort == customPort;
+    
+    private async Task OnServerPortChanged(ChangeEventArgs e)
+    {
+        if (IsCustomPortSelected() && int.TryParse(e.Value.ToString(), out int customInput))
+        {
+            serverPort = customInput;
+        }
+        else if (int.TryParse(e.Value.ToString(), out int selectedPort))
+        {
+            serverPort = selectedPort;
+        }
+    }
+}
