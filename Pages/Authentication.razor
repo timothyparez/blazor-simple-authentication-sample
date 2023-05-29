@@ -15,14 +15,12 @@
     [Parameter] public string? Action { get; set; }
 
         protected override Task OnInitializedAsync()
-        {
-            Console.WriteLine("InitializedAsync");
+        {            
             return base.OnInitializedAsync();
         }
 
         protected override Task OnAfterRenderAsync(bool firstRender)
-        {
-            Console.WriteLine($"OnAfterRenderAsync({firstRender}: {Action})");
+        {            
             return base.OnAfterRenderAsync(firstRender);
         }
 

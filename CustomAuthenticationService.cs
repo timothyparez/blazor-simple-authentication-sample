@@ -11,10 +11,8 @@ public class CustomAuthenticationService : AuthenticationStateProvider
     private AuthenticationState anonymousState = new AuthenticationState(new ClaimsPrincipal());
     
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-    {
-        Console.WriteLine($"Getting the authentication state: {Username}/{Password}");
-        
-        if (IsAuthenticated(Username, Password))
+    {           
+        if (!String.IsNullOrWhiteSpace(Username) && IsAuthenticated(Username, Password))
         {
             var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, Username) }, "Custom Authentication Type");
             var user = new ClaimsPrincipal(identity);
