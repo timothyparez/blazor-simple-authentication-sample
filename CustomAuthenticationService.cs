@@ -5,8 +5,8 @@ using System.Linq;
 
 public class CustomAuthenticationService : AuthenticationStateProvider
 {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
     
     private AuthenticationState anonymousState = new AuthenticationState(new ClaimsPrincipal());
     
@@ -41,5 +41,5 @@ public class CustomAuthenticationService : AuthenticationStateProvider
         await Task.CompletedTask;
     }
 
-    private bool IsAuthenticated(string username, string password) => username == "Batman" && password == "sponge";
+    private bool IsAuthenticated(string? username, string? password) => (username?.Equals("Batman") ?? false) && (password?.Equals("sponge") ?? false);
 }
