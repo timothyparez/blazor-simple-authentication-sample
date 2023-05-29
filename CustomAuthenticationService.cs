@@ -30,6 +30,7 @@ public class CustomAuthenticationService : AuthenticationStateProvider
     public async Task SignOutAsync()
     {
         NotifyAuthenticationStateChanged(Task.FromResult(anonymousState));
+        await Task.CompletedTask;
     }
 
     public async Task SignInAsync(string username, string password)
@@ -37,6 +38,7 @@ public class CustomAuthenticationService : AuthenticationStateProvider
         Username = username;
         Password = password;
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        await Task.CompletedTask;
     }
 
     private bool IsAuthenticated(string username, string password) => username == "Batman" && password == "sponge";
