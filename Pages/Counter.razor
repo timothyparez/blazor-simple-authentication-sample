@@ -2,17 +2,30 @@
 
 <PageTitle>Counter</PageTitle>
 
-<h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity?.Name!
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+        <h1>Counter</h1>
 
-@code {
-    private int currentCount = 0;
+        <p role="status">Current count: @currentCount</p>
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+        @code {
+            private int currentCount = 0;
+
+            private void IncrementCount()
+            {
+                currentCount++;
+            }
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
+
+
